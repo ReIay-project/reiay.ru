@@ -45,6 +45,34 @@
             background-color: #000; /* Цвет для рамки вокруг */
         }
 
+        /* Прелоадер */
+        #preloader {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        #preloader .spinner {
+            border: 8px solid rgba(255, 255, 255, 0.1);
+            border-top: 8px solid #fff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Переливающийся градиентный фон */
         .gradient-background {
             position: absolute;
@@ -112,12 +140,17 @@
             letter-spacing: 2px;
             color: #ff0055;
             text-shadow: 0 0 10px #ff0055;
-            animation: pulse 2s infinite alternate;
+            animation: typing-animation 4s steps(40, end), blink-caret 0.75s step-end infinite;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); text-shadow: 0 0 10px #ff0055; }
-            100% { transform: scale(1.05); text-shadow: 0 0 20px #ff66ff; }
+        @keyframes typing-animation {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #ff0055; }
         }
 
         h3 {
@@ -164,11 +197,12 @@
             color: white;
             margin-bottom: 15px;
             box-sizing: border-box;
-            transition: box-shadow 0.3s;
+            transition: box-shadow 0.3s, border-color 0.3s;
         }
 
         #accessForm input[type="email"]:focus {
             box-shadow: 0 0 10px #ff0055;
+            border-color: red;
         }
 
         #accessForm button {
@@ -268,6 +302,11 @@
 </head>
 
 <body>
+    <!-- Прелоадер -->
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
     <!-- Переливающийся градиентный фон -->
     <div class="gradient-background"></div>
     
@@ -309,6 +348,12 @@
     </script>
 
     <script>
+        // Прелоадер
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            preloader.style.display = 'none';
+        });
+
         document.addEventListener('DOMContentLoaded', function () {
             particlesJS.load('particles-js', '/public/particlesjs-config.json', function() {
                 console.log('Particles.js loaded');
@@ -348,6 +393,7 @@
 
                 successMessage.style.display = 'block';
                 successMessage.innerText = 'Запрос успешно отправлен.';
+                showPopup('Запрос успешно отправлен!');
             }, 1000);
         });
 
@@ -407,6 +453,45 @@
         } else {
             setLanguage('ru');
         }
+
+        // Всплывающее окно подтверждения
+        function showPopup(message) {
+            const popup = document.createElement('div');
+            popup.classList.add('popup');
+            popup.innerText = message;
+            document.body.appendChild(popup);
+            setTimeout(() => {
+                popup.classList.add('show');
+                setTimeout(() => {
+                    popup.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(popup);
+                    }, 300);
+                }, 3000);
+            }, 100);
+        }
     </script>
+
+    <style>
+        /* Всплывающее окно подтверждения */
+        .popup {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #28a745;
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .popup.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px);
+        }
+    </style>
 </body>
 </html>
