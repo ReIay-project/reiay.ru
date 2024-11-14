@@ -237,7 +237,7 @@
         <p>Мессенджер нового поколения</p>
 
         <form id="accessForm" novalidate>
-            <input type="email" id="email" name="email" placeholder="yourname@example.com" required aria-label="Введите email" pattern="^[^\\s@]+@[^\s@]+\\.[^\\s@]+$">
+            <input type="email" id="email" name="email" placeholder="yourname@example.com" required aria-label="Введите email" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$">
             <button id="submitButton" type="submit" aria-label="Запросить доступ, введите ваш email">Запросить доступ</button>
             <div id="spinner" class="spinner" style="display: none;"></div>
             <p id="errorMessage">Введите корректный email</p>
@@ -302,7 +302,8 @@
                 button.disabled = false;
 
                 successMessage.style.display = 'block';
-                successMessage.innerText = 'Запрос успешно отправлен.';
+                successMessage.innerText = 'Запрос успешно отправлен. Мы свяжемся с вами по указанному адресу.';
+                document.getElementById('email').value = '';
             }, 1000);
         });
     </script>
