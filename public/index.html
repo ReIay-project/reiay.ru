@@ -461,98 +461,11 @@
         }
         setInterval(updateTime, 1000);
 
-// Функционал для поддержки мультиязычности
-
-const languages = {
-    en: {
-        welcome: "Welcome to our application!",
-        logout: "Logout",
-        profile: "Profile",
-        settings: "Settings",
-    },
-    ru: {
-        welcome: "Добро пожаловать в наше приложение!",
-        logout: "Выйти",
-        profile: "Профиль",
-        settings: "Настройки",
-    },
-    es: {
-        welcome: "¡Bienvenido a nuestra aplicación!",
-        logout: "Cerrar sesión",
-        profile: "Perfil",
-        settings: "Configuraciones",
-    },
-};
-
-let currentLanguage = 'en'; // Установите язык по умолчанию
-
-function setLanguage(lang) {
-    if (languages[lang]) {
-        currentLanguage = lang;
-        updateTextContent();
-    } else {
-        console.warn(`Language ${lang} is not supported.`);
-    }
-}
-
-function updateTextContent() {
-    document.querySelectorAll("[data-i18n]").forEach((element) => {
-        const key = element.getAttribute("data-i18n");
-        if (languages[currentLanguage][key]) {
-            element.textContent = languages[currentLanguage][key];
-        }
-    });
-}
-
-// Пример использования: добавляем обработчики переключения языка
-
-const languageSelectors = document.querySelectorAll(".language-selector");
-
-languageSelectors.forEach((selector) => {
-    selector.addEventListener("click", (event) => {
-        const selectedLanguage = event.target.getAttribute("data-lang");
-        setLanguage(selectedLanguage);
-    });
-});
-
-// При загрузке страницы установить текущий язык
-window.addEventListener("DOMContentLoaded", () => {
-    updateTextContent();
-    addLanguageButtons();
-});
-
-// Функция для добавления кнопок смены языка
-function addLanguageButtons() {
-    const languageContainer = document.createElement('div');
-    languageContainer.id = 'language-buttons';
-
-    const languagesAvailable = ['en', 'ru', 'es'];
-    languagesAvailable.forEach(lang => {
-        const button = document.createElement('button');
-        button.className = 'language-selector';
-        button.setAttribute('data-lang', lang);
-        button.textContent = lang === 'en' ? 'English' : lang === 'ru' ? 'Русский' : 'Español';
-        languageContainer.appendChild(button);
-    });
-
-    document.body.insertBefore(languageContainer, document.body.firstChild);
-
-    // Добавить обработчики событий для новых кнопок
-    document.querySelectorAll(".language-selector").forEach((selector) => {
-        selector.addEventListener("click", (event) => {
-            const selectedLanguage = event.target.getAttribute("data-lang");
-            setLanguage(selectedLanguage);
-        });
-    });
-}
-
-// HTML структура для мультиязычности может выглядеть так:
-// <button class="language-selector" data-lang="en">English</button>
-// <button class="language-selector" data-lang="ru">Русский</button>
-// <button class="language-selector" data-lang="es">Español</button>
-// <h1 data-i18n="welcome"></h1>
-// <button data-i18n="logout"></button>
-// <a href="#" data-i18n="profile"></a>
-// <a href="#" data-i18n="settings"></a>
-
-// Таким образом, при нажатии на кнопку смены языка текст элементов будет обновлен автоматически.
+        // Функционал для поддержки мультиязычности
+        const translations = {
+            en: {
+                title: 'Relay Messenger',
+                tagline: 'We work for you',
+                description: 'Next-generation messenger',
+                requestAccess: 'Request Access',
+                enterEmail:

@@ -23,10 +23,10 @@
     <meta name="theme-color" content="#ffffff">
 
     <!-- Стили -->
-    <link rel="preload" href="/public/fonts/custom-font.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="/public/css/base.css" defer>
-    <link rel="stylesheet" href="/public/css/vendor.css" defer>
-    <link rel="stylesheet" href="/public/css/main.css" defer>
+    <link rel="preload" href="/fonts/custom-font.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/css/base.css" defer>
+    <link rel="stylesheet" href="/css/vendor.css" defer>
+    <link rel="stylesheet" href="/css/main.css" defer>
 
     <style>
         /* Основные стили */
@@ -42,7 +42,62 @@
             height: 100vh;
             overflow: hidden;
             position: relative;
-            background-color: #000; /* Цвет для рамки вокруг */
+            background-color: #000;
+            transition: background-color 0.3s ease;
+        }
+
+        body.light-theme {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        /* Темная и светлая тема */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff0055;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .theme-toggle.light {
+            background: #000000;
+        }
+
+        .theme-toggle:hover {
+            background-color: #e6004c;
+        }
+
+        /* Прелоадер */
+        #preloader {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        #preloader .spinner {
+            border: 8px solid rgba(255, 255, 255, 0.1);
+            border-top: 8px solid #fff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         /* Переливающийся градиентный фон */
@@ -60,9 +115,7 @@
 
         @keyframes gradient-animation {
             0% { background-position: 0% 50%; }
-            25% { background-position: 50% 100%; }
             50% { background-position: 100% 50%; }
-            75% { background-position: 50% 0%; }
             100% { background-position: 0% 50%; }
         }
 
@@ -73,8 +126,8 @@
             height: 100%;
             top: 0;
             left: 0;
-            background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный серый фон */
-            z-index: -2; /* Между градиентным фоном и контентом */
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -2;
         }
 
         #particles-js {
@@ -100,6 +153,12 @@
             background: rgba(0, 0, 0, 0.7);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: fade-in 2s ease-in-out;
+        }
+
+        @keyframes fade-in {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
@@ -108,18 +167,36 @@
             letter-spacing: 2px;
             color: #ff0055;
             text-shadow: 0 0 10px #ff0055;
+            animation: typing-animation 4s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing-animation {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #ff0055; }
         }
 
         h3 {
             font-size: 24px;
             margin: 10px 0;
             color: #ffffff;
+            animation: slide-in 1.5s ease-in-out;
+        }
+
+        @keyframes slide-in {
+            0% { opacity: 0; transform: translateX(-100px); }
+            100% { opacity: 1; transform: translateX(0); }
         }
 
         p {
             font-size: 18px;
             margin-top: 10px;
             color: #cccccc;
+            animation: fade-in 2s ease-in-out;
         }
 
         #accessForm {
@@ -129,6 +206,12 @@
             width: 100%;
             max-width: 320px;
             margin-top: 15px;
+            animation: zoom-in 1.5s ease;
+        }
+
+        @keyframes zoom-in {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         #accessForm input[type="email"] {
@@ -141,6 +224,12 @@
             color: white;
             margin-bottom: 15px;
             box-sizing: border-box;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+
+        #accessForm input[type="email"]:focus {
+            box-shadow: 0 0 10px #ff0055;
+            border-color: red;
         }
 
         #accessForm button {
@@ -151,18 +240,23 @@
             background-color: #ff0055;
             color: white;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+            transition: background-color 0.3s, transform 0.3s;
             text-align: center;
             line-height: 1.2;
             display: flex;
             align-items: center;
             justify-content: center;
+            animation: button-bounce 2s infinite;
+        }
+
+        @keyframes button-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         #accessForm button:hover {
             background-color: #e6004c;
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);
         }
 
         #accessForm button:active {
@@ -178,12 +272,22 @@
             color: #28a745;
             display: none;
             margin-top: 10px;
+            animation: fade-in 1s ease-in-out;
         }
 
         #errorMessage {
             color: red;
             display: none;
             margin-top: 10px;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
         }
 
         a {
@@ -222,9 +326,17 @@
             }
         }
     </style>
-    <script src="/public/js/particles.min.js"></script>
+</head>
 
 <body>
+    <!-- Прелоадер -->
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Переключатель темы -->
+    <div class="theme-toggle" id="themeToggle">🌙</div>
+
     <!-- Переливающийся градиентный фон -->
     <div class="gradient-background"></div>
     
@@ -250,11 +362,10 @@
         <p><a href="https://t.me/+EfYCJb0xJL03MjZi">Свяжитесь в Telegram</a></p>
     </div>
 
-    <!-- JavaScript -->
-    <script src="/public/js/jquery-3.2.1.min.js" defer></script>
-    <script src="/public/js/plugins.js" defer></script>
-    <script src="/public/js/polygons.js" defer></script>
-    <script src="/public/js/main.js" async></script>
+    <script src="/js/jquery-3.2.1.min.js" defer></script>
+    <script src="/js/plugins.js" defer></script>
+    <script src="/js/polygons.js" defer></script>
+    <script src="/js/main.js" async></script>
 
     <script type="application/ld+json">
     {
@@ -267,6 +378,12 @@
     </script>
 
     <script>
+        // Прелоадер
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            preloader.style.display = 'none';
+        });
+
         document.addEventListener('DOMContentLoaded', function () {
             particlesJS.load('particles-js', '/public/particlesjs-config.json', function() {
                 console.log('Particles.js loaded');
@@ -278,143 +395,85 @@
             });
         });
 
-        document.getElementById('accessForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const spinner = document.getElementById('spinner');
-            const successMessage = document.getElementById('successMessage');
-            const errorMessage = document.getElementById('errorMessage');
-            const button = document.getElementById('submitButton');
-            const email = document.getElementById('email').value;
-
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailPattern.test(email)) {
-                errorMessage.style.display = 'block';
-                errorMessage.innerText = email.length === 0 ? 'Поле email не может быть пустым' : 'Введите корректный формат email';
-                return;
+        // Переключатель темы
+        document.getElementById('themeToggle').addEventListener('click', function() {
+            document.body.classList.toggle('light-theme');
+            if (document.body.classList.contains('light-theme')) {
+                this.classList.add('light');
+                localStorage.setItem('theme', 'light');
+            } else {
+                this.classList.remove('light');
+                localStorage.setItem('theme', 'dark');
             }
-
-            errorMessage.style.display = 'none';
-            button.classList.add('loading');
-            button.disabled = true;
-            spinner.style.display = 'inline-block';
-
-            // Заглушка для запроса, т.к. ресурс /validate-access отсутствует
-            setTimeout(() => {
-                spinner.style.display = 'none';
-                button.classList.remove('loading');
-                button.disabled = false;
-
-                successMessage.style.display = 'block';
-                successMessage.innerText = 'Запрос успешно отправлен. Мы свяжемся с вами по указанному адресу.';
-                document.getElementById('email').value = '';
-            }, 1000);
         });
-    </script>
+        // Установка темы на основе сохраненных данных
+document.addEventListener('DOMContentLoaded', function () {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+        document.getElementById('themeToggle').classList.add('light');
+    }
+});
 
-    <script>
-        // Настройка анимации частиц
-        particlesJS('particles-js', {
-            "particles": {
-                "number": {
-                    "value": 100,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#ffffff"
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    }
-                },
-                "opacity": {
-                    "value": 0.5,
-                    "random": true,
-                    "anim": {
-                        "enable": true,
-                        "speed": 1,
-                        "opacity_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 5,
-                    "random": true,
-                    "anim": {
-                        "enable": true,
-                        "speed": 5,
-                        "size_min": 0.1,
-                        "sync": false
-                    }
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#ffffff",
-                    "opacity": 0.4,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 3,
-                    "direction": "none",
-                    "random": true,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
-                }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "grab"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 140,
-                        "line_linked": {
-                            "opacity": 1
-                        }
-                    },
-                    "bubble": {
-                        "distance": 200,
-                        "size": 10,
-                        "duration": 2,
-                        "opacity": 0.8,
-                        "speed": 3
-                    },
-                    "repulse": {
-                        "distance": 200,
-                        "duration": 0.4
-                    },
-                    "push": {
-                        "particles_nb": 4
-                    },
-                    "remove": {
-                        "particles_nb": 2
-                    }
-                }
-            },
-            "retina_detect": true
-        });
-    </script>
-</body>
-</html>
+// Функционал для поддержки мультиязычности
+const translations = {
+    en: {
+        title: 'Relay Messenger',
+        tagline: 'We work for you',
+        description: 'Next-generation messenger',
+        requestAccess: 'Request Access',
+        enterEmail: 'Enter email'
+    },
+    ru: {
+        title: 'Relay Мессенджер',
+        tagline: 'Мы работаем для Вас',
+        description: 'Мессенджер нового поколения',
+        requestAccess: 'Запросить доступ',
+        enterEmail: 'Введите email'
+    }
+};
+
+// Функция для изменения языка
+function changeLanguage(language) {
+    document.querySelector('title').textContent = translations[language].title;
+    document.querySelector('h1').textContent = translations[language].title;
+    document.querySelector('h3').textContent = translations[language].tagline;
+    document.querySelector('.home-content p').textContent = translations[language].description;
+    document.getElementById('submitButton').textContent = translations[language].requestAccess;
+    document.getElementById('email').setAttribute('placeholder', translations[language].enterEmail);
+}
+
+// Пример использования
+document.addEventListener('DOMContentLoaded', () => {
+    // Устанавливаем язык на основе настроек браузера
+    const userLang = navigator.language || 'ru';
+    const defaultLang = userLang.startsWith('en') ? 'en' : 'ru';
+    document.documentElement.lang = defaultLang;
+    changeLanguage(defaultLang);
+
+    // Создаем кнопку для переключения языка
+    const languageSwitch = document.createElement('button');
+    languageSwitch.id = 'languageSwitch';
+    languageSwitch.textContent = 'Сменить язык';
+    languageSwitch.style.position = 'fixed';
+    languageSwitch.style.top = '20px';
+    languageSwitch.style.right = '20px';
+    languageSwitch.style.padding = '10px';
+    languageSwitch.style.backgroundColor = '#ff0055';
+    languageSwitch.style.color = '#ffffff';
+    languageSwitch.style.border = 'none';
+    languageSwitch.style.borderRadius = '5px';
+    languageSwitch.style.cursor = 'pointer';
+    document.body.appendChild(languageSwitch);
+
+    // Логика переключения языка
+    languageSwitch.addEventListener('click', () => {
+        const currentLang = document.documentElement.lang;
+        const newLang = currentLang === 'ru' ? 'en' : 'ru';
+        document.documentElement.lang = newLang;
+        changeLanguage(newLang);
+    });
+});
+
+
+ 
