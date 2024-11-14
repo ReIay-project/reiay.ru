@@ -35,12 +35,14 @@
             color: white;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
             position: relative;
+            background-color: #000; /* Цвет для рамки вокруг */
         }
 
         /* Переливающийся градиентный фон */
@@ -53,13 +55,24 @@
             background: linear-gradient(45deg, #ff0066, #ffcc00, #00ccff, #ff66ff);
             background-size: 300% 300%;
             animation: gradient-animation 12s ease infinite;
-            z-index: -2;
+            z-index: -3;
         }
 
         @keyframes gradient-animation {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        /* Полупрозрачная серая рамка */
+        .overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный серый фон */
+            z-index: -2; /* Между градиентным фоном и контентом */
         }
 
         #particles-js {
@@ -212,6 +225,9 @@
     <!-- Переливающийся градиентный фон -->
     <div class="gradient-background"></div>
     
+    <!-- Полупрозрачная серая рамка -->
+    <div class="overlay"></div>
+
     <!-- Анимация частиц -->
     <div id="particles-js"></div>
 
