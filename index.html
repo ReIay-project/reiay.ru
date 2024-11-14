@@ -7,18 +7,27 @@
     <meta name="description" content="Relay - уникальный мессенджер нового поколения. Обеспечиваем удобное, быстрое и надежное общение с современными функциями.">
     <meta property="og:title" content="Relay Messenger">
     <meta property="og:description" content="Relay - мессенджер нового поколения.">
-    <meta property="og:image" content="https://example.com/relay-thumbnail.jpg">
-    <meta property="og:url" content="https://relay.example.com">
+    <meta property="og:image" content="https://reiay.ru/path/to/relay-thumbnail.jpg">
+    <meta property="og:url" content="https://reiay.ru">
     <meta name="twitter:card" content="summary_large_image">
 
-    <link rel="stylesheet" href="css/base.css" defer>
-    <link rel="stylesheet" href="css/vendor.css" defer>
-    <link rel="stylesheet" href="css/main.css" defer>
+    <!-- Favicon и иконки для разных устройств -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon-16x16.png">
+    <link rel="manifest" href="/public/site.webmanifest">
+    <link rel="mask-icon" href="/public/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/public/favicon.ico" type="image/x-icon">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="theme-color" content="#ffffff">
 
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Стили -->
+    <link rel="stylesheet" href="/css/base.css" defer>
+    <link rel="stylesheet" href="/css/vendor.css" defer>
+    <link rel="stylesheet" href="/css/main.css" defer>
 
     <style>
+        /* Основные стили */
         .spinner {
             display: inline-block;
             width: 20px;
@@ -187,14 +196,14 @@
         <p><a href="https://t.me/+EfYCJb0xJL03MjZi">Свяжитесь в Telegram</a></p>
     </div>
 
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/plugins.js"></script>
-    <script src="js/polygons.js"></script>
-    <script src="js/main.js"></script>
+    <script src="/js/jquery-3.2.1.min.js" defer></script>
+    <script src="/js/plugins.js" defer></script>
+    <script src="/js/polygons.js" defer></script>
+    <script src="/js/main.js" defer></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            particlesJS.load('particles-js', 'path/to/particlesjs-config.json', function() {
+            particlesJS.load('particles-js', '/public/particlesjs-config.json', function() {
                 console.log('Particles.js loaded');
             }, function() {
                 console.error('Ошибка загрузки particles.js');
@@ -231,35 +240,6 @@
                 successMessage.style.display = 'block';
                 successMessage.innerText = 'Запрос успешно отправлен.';
             }, 1000);
-
-            // Если появится реальный маршрут, можно использовать его:
-            /*
-            fetch('https://reiay.ru/some-existing-endpoint', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Ошибка сервера');
-                }
-                return response.json();
-            })
-            .then(data => {
-                successMessage.style.display = 'block';
-                successMessage.innerText = 'Запрос успешно отправлен.';
-            })
-            .catch(err => {
-                console.error(err);
-                errorMessage.style.display = 'block';
-                errorMessage.innerText = 'Ошибка подключения. Попробуйте позже.';
-            })
-            .finally(() => {
-                button.classList.remove('loading');
-                button.disabled = false;
-                spinner.style.display = 'none';
-            });
-            */
         });
     </script>
 </body>
