@@ -30,27 +30,9 @@
 
     <style>
         /* Основные стили */
-        .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: #ffffff;
-            animation: spin 1s ease-in-out infinite;
-            margin-left: 10px;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             color: white;
-            background-color: black;
             margin: 0;
             padding: 0;
             display: flex;
@@ -58,6 +40,26 @@
             align-items: center;
             height: 100vh;
             overflow: hidden;
+            position: relative;
+        }
+
+        /* Переливающийся градиентный фон */
+        .gradient-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(45deg, #ff0066, #ffcc00, #00ccff, #ff66ff);
+            background-size: 300% 300%;
+            animation: gradient-animation 12s ease infinite;
+            z-index: -2;
+        }
+
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         #particles-js {
@@ -76,21 +78,27 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center; /* Центрирование по вертикали внутри контейнера */
+            justify-content: center;
             width: 100%;
             max-width: 400px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         h1 {
-            font-size: 6vw;
-            margin-bottom: 20px; /* Добавлен отступ снизу */
+            font-size: 4vw;
+            margin-bottom: 20px;
             letter-spacing: 2px;
             color: #ff0055;
+            text-shadow: 0 0 10px #ff0055;
         }
 
         h3 {
             font-size: 24px;
             margin: 10px 0;
+            color: #ffffff;
         }
 
         p {
@@ -105,35 +113,32 @@
             align-items: center;
             width: 100%;
             max-width: 320px;
-        }
-
-        #accessForm input[type="email"],
-        #accessForm button {
-            width: 100%;
-            max-width: 280px;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 5px;
-            text-align: center;
-            box-sizing: border-box;
-            margin-bottom: 15px;
+            margin-top: 15px;
         }
 
         #accessForm input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
             border: 1px solid #555;
             background-color: #222;
             color: white;
+            margin-bottom: 15px;
+            box-sizing: border-box;
         }
 
         #accessForm button {
-            border: none;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
             background-color: #ff0055;
             color: white;
             cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 10px; /* Добавлен отступ сверху для кнопки */
-            text-align: center; /* Центрирование текста по горизонтали */
-            line-height: 1.2; /* Установка межстрочного расстояния для центрирования текста по вертикали */
+            transition: background-color 0.3s, transform 0.3s;
+            text-align: center;
+            line-height: 1.2;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -141,6 +146,11 @@
 
         #accessForm button:hover {
             background-color: #e6004c;
+            transform: translateY(-2px);
+        }
+
+        #accessForm button:active {
+            transform: translateY(1px);
         }
 
         #submitButton.loading {
@@ -163,9 +173,11 @@
         a {
             color: #ff0055;
             text-decoration: none;
+            transition: color 0.3s;
         }
 
         a:hover {
+            color: #e6004c;
             text-decoration: underline;
         }
 
@@ -197,14 +209,19 @@
 </head>
 
 <body>
+    <!-- Переливающийся градиентный фон -->
+    <div class="gradient-background"></div>
+    
+    <!-- Анимация частиц -->
     <div id="particles-js"></div>
+
     <div class="home-content">
         <h1>RELAY</h1>
         <h3>Мы работаем для Вас</h3>
         <p>Мессенджер нового поколения</p>
 
         <form id="accessForm" novalidate>
-            <input type="email" id="email" name="email" placeholder="yourname@example.com" required aria-label="Введите email" pattern="^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$">
+            <input type="email" id="email" name="email" placeholder="yourname@example.com" required aria-label="Введите email" pattern="^[^\\s@]+@[^\s@]+\\.[^\\s@]+$">
             <button id="submitButton" type="submit" aria-label="Запросить доступ, введите ваш email">Запросить доступ</button>
             <div id="spinner" class="spinner" style="display: none;"></div>
             <p id="errorMessage">Введите корректный email</p>
