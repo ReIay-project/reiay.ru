@@ -42,7 +42,34 @@
             height: 100vh;
             overflow: hidden;
             position: relative;
-            background-color: #000; /* Цвет для рамки вокруг */
+            background-color: #000;
+            transition: background-color 0.3s ease;
+        }
+
+        body.light-theme {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        /* Темная и светлая тема */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff0055;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .theme-toggle.light {
+            background: #000000;
+        }
+
+        .theme-toggle:hover {
+            background-color: #e6004c;
         }
 
         /* Прелоадер */
@@ -99,8 +126,8 @@
             height: 100%;
             top: 0;
             left: 0;
-            background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный серый фон */
-            z-index: -2; /* Между градиентным фоном и контентом */
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -2;
         }
 
         #particles-js {
@@ -298,6 +325,26 @@
                 padding: 10px;
             }
         }
+
+        /* Всплывающее окно подтверждения */
+        .popup {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #28a745;
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .popup.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px);
+        }
     </style>
 </head>
 
@@ -306,6 +353,9 @@
     <div id="preloader">
         <div class="spinner"></div>
     </div>
+
+    <!-- Переключатель темы -->
+    <div class="theme-toggle" id="themeToggle">🌙</div>
 
     <!-- Переливающийся градиентный фон -->
     <div class="gradient-background"></div>
@@ -411,87 +461,72 @@
         }
         setInterval(updateTime, 1000);
 
-        // Функционал для поддержки мультиязычности
-        const translations = {
-            en: {
-                title: 'Relay Messenger',
-                tagline: 'We work for you',
-                description: 'Next-generation messenger',
-                requestAccess: 'Request Access',
-                enterEmail: 'Enter email',
-                successMessage: 'Request sent successfully.',
-                invalidEmail: 'Enter a valid email format',
-                telegramContact: 'Contact via Telegram'
-            },
-            ru: {
-                title: 'RELAY',
-                tagline: 'Мы работаем для Вас',
-                description: 'Мессенджер нового поколения',
-                requestAccess: 'Запросить доступ',
-                enterEmail: 'Введите email',
-                successMessage: 'Запрос успешно отправлен.',
-                invalidEmail: 'Введите корректный формат email',
-                telegramContact: 'Свяжитесь в Telegram'
-            }
-        };
+// Функционал для поддержки мультиязычности
 
-        function setLanguage(lang) {
-            const text = translations[lang] || translations['ru'];
-            document.querySelector('h1').innerText = text.title;
-            document.querySelector('h3').innerText = text.tagline;
-            document.querySelector('#accessForm button').innerText = text.requestAccess;
-            document.querySelector('#email').setAttribute('placeholder', text.enterEmail);
-            document.querySelector('#successMessage').innerText = text.successMessage;
-            document.querySelector('#errorMessage').innerText = text.invalidEmail;
-            document.querySelector('a').innerText = text.telegramContact;
-        }
+const languages = {
+    en: {
+        welcome: "Welcome to our application!",
+        logout: "Logout",
+        profile: "Profile",
+        settings: "Settings",
+    },
+    ru: {
+        welcome: "Добро пожаловать в наше приложение!",
+        logout: "Выйти",
+        profile: "Профиль",
+        settings: "Настройки",
+    },
+    es: {
+        welcome: "¡Bienvenido a nuestra aplicación!",
+        logout: "Cerrar sesión",
+        profile: "Perfil",
+        settings: "Configuraciones",
+    },
+};
 
-        // Переключение языка на основании локали пользователя
-        const userLang = navigator.language || navigator.userLanguage;
-        if (userLang.includes('en')) {
-            setLanguage('en');
-        } else {
-            setLanguage('ru');
-        }
+let currentLanguage = 'en'; // Установите язык по умолчанию
 
-        // Всплывающее окно подтверждения
-        function showPopup(message) {
-            const popup = document.createElement('div');
-            popup.classList.add('popup');
-            popup.innerText = message;
-            document.body.appendChild(popup);
-            setTimeout(() => {
-                popup.classList.add('show');
-                setTimeout(() => {
-                    popup.classList.remove('show');
-                    setTimeout(() => {
-                        document.body.removeChild(popup);
-                    }, 300);
-                }, 3000);
-            }, 100);
-        }
-    </script>
+function setLanguage(lang) {
+    if (languages[lang]) {
+        currentLanguage = lang;
+        updateTextContent();
+    } else {
+        console.warn(`Language ${lang} is not supported.`);
+    }
+}
 
-    <style>
-        /* Всплывающее окно подтверждения */
-        .popup {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #28a745;
-            color: #fff;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transition: opacity 0.3s, transform 0.3s;
+function updateTextContent() {
+    document.querySelectorAll("[data-i18n]").forEach((element) => {
+        const key = element.getAttribute("data-i18n");
+        if (languages[currentLanguage][key]) {
+            element.textContent = languages[currentLanguage][key];
         }
+    });
+}
 
-        .popup.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(-10px);
-        }
-    </style>
-</body>
-</html>
+// Пример использования: добавляем обработчики переключения языка
+
+const languageSelectors = document.querySelectorAll(".language-selector");
+
+languageSelectors.forEach((selector) => {
+    selector.addEventListener("click", (event) => {
+        const selectedLanguage = event.target.getAttribute("data-lang");
+        setLanguage(selectedLanguage);
+    });
+});
+
+// При загрузке страницы установить текущий язык
+window.addEventListener("DOMContentLoaded", () => {
+    updateTextContent();
+});
+
+// HTML структура для мультиязычности может выглядеть так:
+// <button class="language-selector" data-lang="en">English</button>
+// <button class="language-selector" data-lang="ru">Русский</button>
+// <button class="language-selector" data-lang="es">Español</button>
+// <h1 data-i18n="welcome"></h1>
+// <button data-i18n="logout"></button>
+// <a href="#" data-i18n="profile"></a>
+// <a href="#" data-i18n="settings"></a>
+
+// Таким образом, при нажатии на кнопку смены языка текст элементов будет обновлен автоматически.
