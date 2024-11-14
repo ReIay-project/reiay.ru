@@ -518,7 +518,33 @@ languageSelectors.forEach((selector) => {
 // При загрузке страницы установить текущий язык
 window.addEventListener("DOMContentLoaded", () => {
     updateTextContent();
+    addLanguageButtons();
 });
+
+// Функция для добавления кнопок смены языка
+function addLanguageButtons() {
+    const languageContainer = document.createElement('div');
+    languageContainer.id = 'language-buttons';
+
+    const languagesAvailable = ['en', 'ru', 'es'];
+    languagesAvailable.forEach(lang => {
+        const button = document.createElement('button');
+        button.className = 'language-selector';
+        button.setAttribute('data-lang', lang);
+        button.textContent = lang === 'en' ? 'English' : lang === 'ru' ? 'Русский' : 'Español';
+        languageContainer.appendChild(button);
+    });
+
+    document.body.insertBefore(languageContainer, document.body.firstChild);
+
+    // Добавить обработчики событий для новых кнопок
+    document.querySelectorAll(".language-selector").forEach((selector) => {
+        selector.addEventListener("click", (event) => {
+            const selectedLanguage = event.target.getAttribute("data-lang");
+            setLanguage(selectedLanguage);
+        });
+    });
+}
 
 // HTML структура для мультиязычности может выглядеть так:
 // <button class="language-selector" data-lang="en">English</button>
