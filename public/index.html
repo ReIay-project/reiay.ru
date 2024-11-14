@@ -98,6 +98,12 @@
             background: rgba(0, 0, 0, 0.7);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: fade-in 2s ease-in-out;
+        }
+
+        @keyframes fade-in {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         h1 {
@@ -106,18 +112,31 @@
             letter-spacing: 2px;
             color: #ff0055;
             text-shadow: 0 0 10px #ff0055;
+            animation: pulse 2s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); text-shadow: 0 0 10px #ff0055; }
+            100% { transform: scale(1.05); text-shadow: 0 0 20px #ff66ff; }
         }
 
         h3 {
             font-size: 24px;
             margin: 10px 0;
             color: #ffffff;
+            animation: slide-in 1.5s ease-in-out;
+        }
+
+        @keyframes slide-in {
+            0% { opacity: 0; transform: translateX(-100px); }
+            100% { opacity: 1; transform: translateX(0); }
         }
 
         p {
             font-size: 18px;
             margin-top: 10px;
             color: #cccccc;
+            animation: fade-in 2s ease-in-out;
         }
 
         #accessForm {
@@ -127,6 +146,12 @@
             width: 100%;
             max-width: 320px;
             margin-top: 15px;
+            animation: zoom-in 1.5s ease;
+        }
+
+        @keyframes zoom-in {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
         #accessForm input[type="email"] {
@@ -139,6 +164,11 @@
             color: white;
             margin-bottom: 15px;
             box-sizing: border-box;
+            transition: box-shadow 0.3s;
+        }
+
+        #accessForm input[type="email"]:focus {
+            box-shadow: 0 0 10px #ff0055;
         }
 
         #accessForm button {
@@ -155,6 +185,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            animation: button-bounce 2s infinite;
+        }
+
+        @keyframes button-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
         }
 
         #accessForm button:hover {
@@ -175,12 +211,22 @@
             color: #28a745;
             display: none;
             margin-top: 10px;
+            animation: fade-in 1s ease-in-out;
         }
 
         #errorMessage {
             color: red;
             display: none;
             margin-top: 10px;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
         }
 
         a {
