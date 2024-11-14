@@ -7,21 +7,18 @@
     <meta name="description" content="Relay - уникальный мессенджер нового поколения. Обеспечиваем удобное, быстрое и надежное общение с современными функциями.">
     <meta property="og:title" content="Relay Messenger">
     <meta property="og:description" content="Relay - мессенджер нового поколения.">
-    <meta property="og:image" content="https://reiay.ru/path/to/relay-thumbnail.jpg">
-    <meta property="og:url" content="https://reiay.ru">
+    <meta property="og:image" content="https://example.com/relay-thumbnail.jpg">
+    <meta property="og:url" content="https://relay.example.com">
     <meta name="twitter:card" content="summary_large_image">
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/base.css" defer>
+    <link rel="stylesheet" href="css/vendor.css" defer>
+    <link rel="stylesheet" href="css/main.css" defer>
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="/css/base.css" defer loading="lazy">
-    <link rel="stylesheet" href="/css/vendor.css" defer loading="lazy">
-    <link rel="stylesheet" href="/css/main.css" defer loading="lazy">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 
     <style>
-        /* Основные стили */
         .spinner {
             display: inline-block;
             width: 20px;
@@ -121,6 +118,11 @@
             background-color: #e6004c;
         }
 
+        #submitButton.loading {
+            cursor: progress;
+            opacity: 0.7;
+        }
+
         #successMessage {
             color: #28a745;
             display: none;
@@ -185,14 +187,14 @@
         <p><a href="https://t.me/+EfYCJb0xJL03MjZi">Свяжитесь в Telegram</a></p>
     </div>
 
-    <script src="/js/jquery-3.2.1.min.js" defer loading="lazy"></script>
-    <script src="/js/plugins.js" defer loading="lazy"></script>
-    <script src="/js/polygons.js" defer loading="lazy"></script>
-    <script src="/js/main.js" defer loading="lazy"></script>
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/plugins.js"></script>
+    <script src="js/polygons.js"></script>
+    <script src="js/main.js"></script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            particlesJS.load('particles-js', '/path/to/particlesjs-config.json', function() {
+            particlesJS.load('particles-js', 'path/to/particlesjs-config.json', function() {
                 console.log('Particles.js loaded');
             }, function() {
                 console.error('Ошибка загрузки particles.js');
@@ -220,6 +222,7 @@
             button.disabled = true;
             spinner.style.display = 'inline-block';
 
+            // Заглушка для запроса, т.к. ресурс /validate-access отсутствует
             setTimeout(() => {
                 spinner.style.display = 'none';
                 button.classList.remove('loading');
@@ -228,6 +231,35 @@
                 successMessage.style.display = 'block';
                 successMessage.innerText = 'Запрос успешно отправлен.';
             }, 1000);
+
+            // Если появится реальный маршрут, можно использовать его:
+            /*
+            fetch('https://reiay.ru/some-existing-endpoint', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Ошибка сервера');
+                }
+                return response.json();
+            })
+            .then(data => {
+                successMessage.style.display = 'block';
+                successMessage.innerText = 'Запрос успешно отправлен.';
+            })
+            .catch(err => {
+                console.error(err);
+                errorMessage.style.display = 'block';
+                errorMessage.innerText = 'Ошибка подключения. Попробуйте позже.';
+            })
+            .finally(() => {
+                button.classList.remove('loading');
+                button.disabled = false;
+                spinner.style.display = 'none';
+            });
+            */
         });
     </script>
 </body>
