@@ -468,4 +468,34 @@
                 tagline: 'We work for you',
                 description: 'Next-generation messenger',
                 requestAccess: 'Request Access',
-                enterEmail:
+                enterEmail: 'Enter your email address',
+                successMessage: 'Request successfully sent!',
+                contact: 'Contact us on Telegram'
+            },
+            ru: {
+                title: 'RELAY',
+                tagline: 'Мы работаем для Вас',
+                description: 'Мессенджер нового поколения',
+                requestAccess: 'Запросить доступ',
+                enterEmail: 'Введите email',
+                successMessage: 'Запрос успешно отправлен!',
+                contact: 'Свяжитесь в Telegram'
+            }
+        };
+
+        function setLanguage(lang) {
+            document.querySelector('h1').innerText = translations[lang].title;
+            document.querySelector('h3').innerText = translations[lang].tagline;
+            document.querySelector('.home-content p').innerText = translations[lang].description;
+            document.getElementById('submitButton').innerText = translations[lang].requestAccess;
+            document.getElementById('email').placeholder = translations[lang].enterEmail;
+            document.getElementById('successMessage').innerText = translations[lang].successMessage;
+            document.querySelector('.home-content a').innerText = translations[lang].contact;
+        }
+
+        // Пример установки языка по умолчанию (русский)
+        setLanguage('ru');
+    </script>
+</body>
+</html>
+
