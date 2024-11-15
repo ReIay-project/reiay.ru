@@ -52,12 +52,17 @@
         <h3 id="tagline">Мы работаем для Вас</h3>
         <p id="description">Мессенджер нового поколения</p>
 
+        <img src="placeholder.jpg" data-src="реальный-путь.jpg" class="lazy-load" alt="описание">
+
         <form id="accessForm" novalidate>
             <input type="email" id="email" name="email" placeholder="yourname@example.com" required aria-label="Введите email" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$">
             <button id="submitButton" type="submit" aria-label="Запросить доступ, введите ваш email">Запросить доступ</button>
             <div id="spinner" class="spinner" style="display: none;"></div>
             <p id="errorMessage">Введите корректный email</p>
         </form>
+
+        <!-- Кнопка входа через Google (OAuth) -->
+        <button id="oauthLoginButton">Войти через Google</button>
 
         <div class="language-switch">
             <button id="languageToggle">Сменить язык</button>
