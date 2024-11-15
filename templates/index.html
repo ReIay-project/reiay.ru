@@ -358,122 +358,52 @@
             <p id="errorMessage">Введите корректный email</p>
         </form>
 
-        <p id="successMessage"></p>
-        <p><a href="https://t.me/+EfYCJb0xJL03MjZi">Свяжитесь в Telegram</a></p>
-    </div>
-
-    <script src="/js/jquery-3.2.1.min.js" defer></script>
-    <script src="/js/plugins.js" defer></script>
-    <script src="/js/polygons.js" defer></script>
-    <script src="/js/main.js" async></script>
-
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Relay Messenger",
-      "url": "https://reiay.ru",
-      "description": "Relay - уникальный мессенджер нового поколения."
-    }
-    </script>
-
-    <script>
-        // Прелоадер
-        window.addEventListener('load', function() {
-            const preloader = document.getElementById('preloader');
-            preloader.style.display = 'none';
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            particlesJS.load('particles-js', '/public/particlesjs-config.json', function() {
-                console.log('Particles.js loaded');
-            }, function() {
-                const errorContainer = document.createElement('div');
-                errorContainer.innerText = 'Ошибка загрузки анимации. Пожалуйста, перезагрузите страницу.';
-                errorContainer.style.color = 'red';
-                document.querySelector('.home-content').appendChild(errorContainer);
-            });
-        });
-
-        // Переключатель темы
-        document.getElementById('themeToggle').addEventListener('click', function() {
-            document.body.classList.toggle('light-theme');
-            if (document.body.classList.contains('light-theme')) {
-                this.classList.add('light');
-                localStorage.setItem('theme', 'light');
-            } else {
-                this.classList.remove('light');
-                localStorage.setItem('theme', 'dark');
+        <div class="language-switch">
+            <button id="languageToggle">Сменить язык</button>
+        </div>
+    
+        <script>
+            // Объект переводов
+            const translations = {
+                en: {
+                    title: 'Relay Messenger',
+                    tagline: 'We work for you',
+                    description: 'Next-generation messenger',
+                    requestAccess: 'Request Access',
+                    enterEmail: 'Enter email'
+                },
+                ru: {
+                    title: 'Relay Мессенджер',
+                    tagline: 'Мы работаем для Вас',
+                    description: 'Мессенджер нового поколения',
+                    requestAccess: 'Запросить доступ',
+                    enterEmail: 'Введите email'
+                }
+            };
+    
+            // Функция для изменения языка
+            function changeLanguage(language) {
+                document.getElementById('title').textContent = translations[language].title;
+                document.getElementById('tagline').textContent = translations[language].tagline;
+                document.getElementById('description').textContent = translations[language].description;
+                document.getElementById('submitButton').textContent = translations[language].requestAccess;
+                document.getElementById('email').setAttribute('placeholder', translations[language].enterEmail);
             }
-        });
-        // Установка темы на основе сохраненных данных
-document.addEventListener('DOMContentLoaded', function () {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'light') {
-        document.body.classList.add('light-theme');
-        document.getElementById('themeToggle').classList.add('light');
-    }
-});
-
-// Функционал для поддержки мультиязычности
-const translations = {
-    en: {
-        title: 'Relay Messenger',
-        tagline: 'We work for you',
-        description: 'Next-generation messenger',
-        requestAccess: 'Request Access',
-        enterEmail: 'Enter email'
-    },
-    ru: {
-        title: 'Relay Мессенджер',
-        tagline: 'Мы работаем для Вас',
-        description: 'Мессенджер нового поколения',
-        requestAccess: 'Запросить доступ',
-        enterEmail: 'Введите email'
-    }
-};
-
-// Функция для изменения языка
-function changeLanguage(language) {
-    document.querySelector('title').textContent = translations[language].title;
-    document.querySelector('h1').textContent = translations[language].title;
-    document.querySelector('h3').textContent = translations[language].tagline;
-    document.querySelector('.home-content p').textContent = translations[language].description;
-    document.getElementById('submitButton').textContent = translations[language].requestAccess;
-    document.getElementById('email').setAttribute('placeholder', translations[language].enterEmail);
-}
-
-// Пример использования
-document.addEventListener('DOMContentLoaded', () => {
-    // Устанавливаем язык на основе настроек браузера
-    const userLang = navigator.language || 'ru';
-    const defaultLang = userLang.startsWith('en') ? 'en' : 'ru';
-    document.documentElement.lang = defaultLang;
-    changeLanguage(defaultLang);
-
-    // Создаем кнопку для переключения языка
-    const languageSwitch = document.createElement('button');
-    languageSwitch.id = 'languageSwitch';
-    languageSwitch.textContent = 'Сменить язык';
-    languageSwitch.style.position = 'fixed';
-    languageSwitch.style.top = '20px';
-    languageSwitch.style.right = '20px';
-    languageSwitch.style.padding = '10px';
-    languageSwitch.style.backgroundColor = '#ff0055';
-    languageSwitch.style.color = '#ffffff';
-    languageSwitch.style.border = 'none';
-    languageSwitch.style.borderRadius = '5px';
-    languageSwitch.style.cursor = 'pointer';
-    document.body.appendChild(languageSwitch);
-
-    // Логика переключения языка
-    languageSwitch.addEventListener('click', () => {
-        const currentLang = document.documentElement.lang;
-        const newLang = currentLang === 'ru' ? 'en' : 'ru';
-        document.documentElement.lang = newLang;
-        changeLanguage(newLang);
-    });
-});
-
-
- 
+    
+            // Установка языка по умолчанию
+            document.addEventListener('DOMContentLoaded', () => {
+                const userLang = navigator.language || 'ru';
+                const defaultLang = userLang.startsWith('en') ? 'en' : 'ru';
+                document.documentElement.lang = defaultLang;
+                changeLanguage(defaultLang);
+    
+                // Кнопка для смены языка
+                const languageToggle = document.getElementById('languageToggle');
+                languageToggle.addEventListener('click', () => {
+                    const currentLang = document.documentElement.lang;
+                    const newLang = currentLang === 'ru' ? 'en' : 'ru';
+                    document.documentElement.lang = newLang;
+                    changeLanguage(newLang);
+                });
+            });
+            
