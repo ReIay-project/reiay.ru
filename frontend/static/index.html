@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html class="no-js" lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Relay</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Relay - уникальный мессенджер нового поколения. Обеспечиваем удобное, быстрое и надежное общение с современными функциями.">
+    <meta property="og:title" content="Relay Messenger">
+    <meta property="og:description" content="Relay - мессенджер нового поколения.">
+    <meta property="og:image" content="https://reiay.ru/path/to/relay-thumbnail.jpg" loading="lazy">
+    <meta property="og:url" content="https://reiay.ru">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="keywords" content="мессенджер, общение, Relay, быстрые сообщения, безопасное общение">
+
+    <!-- Favicon и иконки для разных устройств -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon-16x16.png">
+    <link rel="manifest" href="/public/site.webmanifest">
+    <link rel="mask-icon" href="/public/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Стили -->
+    <link rel="preload" href="/fonts/custom-font.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/css/base.css" defer>
+    <link rel="stylesheet" href="/css/vendor.css" defer>
+    <link rel="stylesheet" href="/css/main.css" defer>
+
+    <style>
+        /* Основные стили */
+        body {
+            font-family: 'Arial', sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background-color: #000;
+            transition: background-color 0.3s ease;
+        }
+
+        body.light-theme {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        /* Темная и светлая тема */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff0055;
+            color: white;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .theme-toggle.light {
+            background: #000000;
+        }
+
+        .theme-toggle:hover {
+            background-color: #e6004c;
+        }
+
+        /* Прелоадер */
+        #preloader {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        #preloader .spinner {
+            border: 8px solid rgba(255, 255, 255, 0.1);
+            border-top: 8px solid #fff;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Переливающийся градиентный фон */
+        .gradient-background {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: linear-gradient(45deg, #ff0066, #ffcc00, #00ccff, #ff66ff);
+            background-size: 300% 300%;
+            animation: gradient-animation 12s ease infinite;
+            z-index: -3;
+        }
+
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Полупрозрачная серая рамка */
+        .overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: -2;
+        }
+
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .home-content {
+            text-align: center;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: fade-in 2s ease-in-out;
+        }
+
+        @keyframes fade-in {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 4vw;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            color: #ff0055;
+            text-shadow: 0 0 10px #ff0055;
+            animation: typing-animation 4s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing-animation {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #ff0055; }
+        }
+
+        h3 {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #ffffff;
+            animation: slide-in 1.5s ease-in-out;
+        }
+
+        @keyframes slide-in {
+            0% { opacity: 0; transform: translateX(-100px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        p {
+            font-size: 18px;
+            margin-top: 10px;
+            color: #cccccc;
+            animation: fade-in 2s ease-in-out;
+        }
+
+        #accessForm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 320px;
+            margin-top: 15px;
+            animation: zoom-in 1.5s ease;
+        }
+
+        @keyframes zoom-in {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        #accessForm input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #555;
+            background-color: #222;
+            color: white;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            transition: box-shadow 0.3s, border-color 0.3s;
+        }
+
+        #accessForm input[type="email"]:focus {
+            box-shadow: 0 0 10px #ff0055;
+            border-color: red;
+        }
+
+        #accessForm button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            background-color: #ff0055;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            text-align: center;
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: button-bounce 2s infinite;
+        }
+
+        @keyframes button-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        #accessForm button:hover {
+            background-color: #e6004c;
+            transform: translateY(-2px);
+        }
+
+        #accessForm button:active {
+            transform: translateY(1px);
+        }
+
+        #submitButton.loading {
+            cursor: progress;
+            opacity: 0.7;
+        }
+
+        #successMessage {
+            color: #28a745;
+            display: none;
+            margin-top: 10px;
+            animation: fade-in 1s ease-in-out;
+        }
+
+        #errorMessage {
+            color: red;
+            display: none;
+            margin-top: 10px;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        a {
+            color: #ff0055;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #e6004c;
+            text-decoration: underline;
+        }
+
+        button:focus {
+            outline: 2px dashed #ff0055;
+            outline-offset: 4px;
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            h3 {
+                font-size: 18px;
+            }
+
+            p {
+                font-size: 14px;
+            }
+
+            #accessForm input[type="email"],
+            #accessForm button {
+                font-size: 14px;
+                padding: 10px;
+            }
+        }
+
+        /* Всплывающее окно подтверждения */
+        .popup {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #28a745;
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .popup.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Прелоадер -->
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Переключатель темы -->
+    <div class="theme-toggle" id="themeToggle">🌙</div>
+
+    <!-- Переливающийся градиентный фон -->
+    <div class="gradient-background"></div>
+    
+    <!-- Полупрозрачная серая рамка -->
+    <div class="overlay"></div>
+
+    <!-- Анимация частиц -->
+    <div id="particles-js"></div>
+
+    <div class="home-content">
+        <h1>RELAY</h1>
+        <h3>Мы работаем для Вас</h3>
+        <p>Мессенджер нового поколения</p>
+
+        <form id="accessForm" novalidate>
+            <input type="email" id="email" name="email" placeholder="yourname@example.com" required aria-label="Введите email" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$">
+            <button id="submitButton" type="submit" aria-label="Запросить доступ, введите ваш email">Запросить доступ</button>
+            <div id="spinner" class="spinner" style="display: none;"></div>
+            <p id="errorMessage">Введите корректный email</p>
+        </form>
+
+        <p id="successMessage"></p>
+        <p><a href="https://t.me/+EfYCJb0xJL03MjZi">Свяжитесь в Telegram</a></p>
+    </div>
+
+    <script src="/js/jquery-3.2.1.min.js" defer></script>
+    <script src="/js/plugins.js" defer></script>
+    <script src="/js/polygons.js" defer></script>
+    <script src="/js/main.js" async></script>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Relay Messenger",
+      "url": "https://reiay.ru",
+      "description": "Relay - уникальный мессенджер нового поколения."
+    }
+    </script>
+
+    <script>
+        // Прелоадер
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            preloader.style.display = 'none';
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            particlesJS.load('particles-js', '/public/particlesjs-config.json', function() {
+                console.log('Particles.js loaded');
+            }, function() {
+                const errorContainer = document.createElement('div');
+                errorContainer.innerText = 'Ошибка загрузки анимации. Пожалуйста, перезагрузите страницу.';
+                errorContainer.style.color = 'red';
+                document.querySelector('.home-content').appendChild(errorContainer);
+            });
+        });
+
+        document.getElementById('accessForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const spinner = document.getElementById('spinner');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            const button = document.getElementById('submitButton');
+            const email = document.getElementById('email').value;
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                errorMessage.style.display = 'block';
+                errorMessage.innerText = email.length === 0 ? 'Поле email не может быть пустым' : 'Введите корректный формат email';
+                return;
+            }
+
+            errorMessage.style.display = 'none';
+            button.classList.add('loading');
+            button.disabled = true;
+            spinner.style.display = 'inline-block';
+
+            fetch('/api/request-access', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email: email})
+            })
+            .then(response => {
+                if (response.ok) {
+                    successMessage.style.display = 'block';
+                    successMessage.innerText = 'Запрос успешно отправлен';
+                } else {
+                    throw new Error(`Ошибка запроса: ${response.status}`);
+                }
+            })
+            .catch(error => {
+                errorMessage.style.display = 'block';
+                errorMessage.innerText = 'Повторите попытку позже';
+                console.error(error);
+            })
+            .finally(() => {
+                spinner.style.display = 'none';
+                button.classList.remove('loading');
+                button.disabled = false;
+            })
+        });
+
+        // Новый функционал - показ текущего времени
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            let timeElement = document.getElementById('currentTime');
+            if (!timeElement) {
+                timeElement = document.createElement('p');
+                timeElement.id = 'currentTime';
+                document.querySelector('.home-content').appendChild(timeElement);
+            }
+            timeElement.innerText = `Текущее время: ${timeString}`;
+        }
+        setInterval(updateTime, 1000);
+
+        // Функционал для поддержки мультиязычности
+        const translations = {
+            en: {
+                title: 'Relay Messenger',
+                tagline: 'We work for you',
+                description: 'Next-generation messenger',
+                requestAccess: 'Request Access',
+                enterEmail: 'Enter your email address',
+                successMessage: 'Request successfully sent!',
+                contact: 'Contact us on Telegram'
+            },
+            ru: {
+                title: 'RELAY',
+                tagline: 'Мы работаем для Вас',
+                description: 'Мессенджер нового поколения',
+                requestAccess: 'Запросить доступ',
+                enterEmail: 'Введите email',
+                successMessage: 'Запрос успешно отправлен!',
+                contact: 'Свяжитесь в Telegram'
+            }
+        };
+
+        function setLanguage(lang) {
+            document.querySelector('h1').innerText = translations[lang].title;
+            document.querySelector('h3').innerText = translations[lang].tagline;
+            document.querySelector('.home-content p').innerText = translations[lang].description;
+            document.getElementById('submitButton').innerText = translations[lang].requestAccess;
+            document.getElementById('email').placeholder = translations[lang].enterEmail;
+            document.getElementById('successMessage').innerText = translations[lang].successMessage;
+            document.querySelector('.home-content a').innerText = translations[lang].contact;
+        }
+
+        // Пример установки языка по умолчанию (русский)
+        setLanguage('ru');
+    </script>
+</body>
+</html>
+

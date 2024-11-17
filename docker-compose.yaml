@@ -1,0 +1,26 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: relay-website-backend
+    env_file:
+      - ./backend/.env
+    volumes:
+      - backend-db:/app/db
+    networks:
+     - relay-network
+  frontend:
+    build:
+      context: ./frontend
+    container_name: relay-website-frontend
+    depends_on:
+      - backend
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+     - relay-network
+volumes:
+  backend-db:
+networks:
+  relay-network:
